@@ -7,9 +7,9 @@ spring:
     name: cost-provider #配置多个实例名称，springCloud集群
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://LAPTOP-ZF:3306/administration?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2B8
+    url: jdbc:mysql://DESKTOP-QLADQDP:3306/x?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2B8
     username: root
-    password:
+    password: 123
 
 eureka:
   client:
