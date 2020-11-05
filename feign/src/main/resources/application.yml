@@ -1,0 +1,58 @@
+server:
+  port: 8764
+
+spring:
+  application:
+    name: feign
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
+  jackson:
+    date-format: yyyy-MM-dd
+    time-zone: GMT+8
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: 2004
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    timeout: 10000
+    jedis:
+      pool:
+        max-active: 200
+        max-wait: -1
+        max-idle: 10
+        min-idle: 0
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    listener:
+      simple:
+        acknowledge-mode: manual
+      direct:
+        acknowledge-mode: manual
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8762/eureka
+
+logging:
+  config: classpath:logback-spring.xml
+  file:
+    path: D:/tmp/log
+
+feign:
+  hystrix:
+    enabled: false
+  client:
+    config:
+      default:
+        connectTimeout: 200000
+        readTimeout: 200000

@@ -1,0 +1,29 @@
+server:
+  port: 8766
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/zhaofan10086/springcloud-config.git
+          search-paths: /
+          username:
+          password:
+          skip-ssl-validation: true
+      label: master
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8762/eureka
+    sampler:
+      probability: 1
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+

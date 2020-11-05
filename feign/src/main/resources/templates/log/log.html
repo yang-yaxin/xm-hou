@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>日志管理</title>
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7/dist/css/bootstrap.css}">
+    <script th:src="@{/webjars/jquery/3.5.1/dist/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7/dist/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" src="../vue/vue.min.js"></script>
+    <script type="text/javascript" src="../bootstrap/bootstrap-paginator.js"></script>
+
+
+</head>
+<body>
+<div class="container">
+    <div class="box-header with-border">
+        <h3 class="box-title">日志管理</h3>
+    </div>
+
+    <div class="box-body" id="app">
+
+        <!-- 数据表格 -->
+        <div class="table-box">
+
+            <!--工具栏-->
+            <div class="pull-left">
+                <div class="form-group form-inline">
+                    <div class="btn-group">
+
+                        <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
+                    </div>
+                </div>
+            </div>
+            <div class="box-tools pull-right">
+                <div class="has-feedback">
+                    名称：<input type="text" v-model="methodName" />
+
+                    <button type="button" class="btn bg-olive" onclick="searchMemberRankList()" >查询</button>
+                </div>
+            </div>
+            <!--工具栏/-->
+
+            <!--数据列表-->
+            <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
+                <thead>
+                <tr>
+                    <th class="sorting">序号</th>
+                    <th class="sorting">类名</th>
+                    <th class="sorting">方法名</th>
+                    <th class="sorting">请求参数</th>
+                    <th class="sorting">响应参数</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="log in logList">
+
+
+                    <td>{{log.id}}</td>
+                    <td>{{log.className}}</td>
+                    <td>{{log.methodName}}</td>
+                    <td>{{log.requestParam}}</td>
+                    <td>{{log.responseParam}}</td>
+
+                </tr>
+
+                </tbody>
+            </table>
+
+            <div id="example" style="text-align: center"> <ul id="pageLimit"></ul> </div>
+
+        </div>
+
+
+
+    </div>
+
+</div>
+
+
+
+
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            logList: "",
+            totalPage:"",
+            total:"",
+            currPage:"",
+            pageSize:"",
+            methodName:""
+
+
+        }
+    })
+
+    $(function() {
+        searchMemberRankList();
+    })
+
+    function searchMemberRankList() {
+        $.ajax({
+            type:"post",
+            url:"../logList",
+            data:{"currPage":vm.currPage,"pageSize":vm.pageSize,"methodName":vm.methodName},
+            dataType:"json",
+            success: function(result) {
+                vm.logList = result.rows;
+                vm.totalPage = result.totalPage;
+                vm.total = result.total;
+                vm.currPage = result.currPage;
+                vm.pageSize = result.pageSize;
+                setPage(result.currPage,result.totalPage,result.pageSize,searchMemberRankList);
+            },
+            error : function() {
+                alert("系统错误，请联系管理员！");
+            }
+        })
+    }
+
+    /**
+     *
+     * @param pageCurrent 当前所在页
+     * @param pageSum 总页数
+     * @param callback 调用ajax
+     */
+    function setPage(pageCurrent, pageSum, pageSize, callback) {
+        $('#pageLimit').bootstrapPaginator({
+            currentPage: pageCurrent,//当前的请求页面。
+            totalPages: pageSum,//一共多少页。
+            size:"normal",//应该是页眉的大小。
+            bootstrapMajorVersion: 3,//bootstrap的版本要求。
+            alignment:"right",
+            numberOfPages:pageSize,//一页列出多少数据。
+            itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
+                switch (type) {
+                    case "first": return "首页";
+                    case "prev": return "上一页";
+                    case "next": return "下一页";
+                    case "last": return "末页";
+                    case "page": return page;
+                }
+            },
+            //当单击操作按钮的时候, 执行该函数, 调用ajax渲染页面
+            onPageClicked: function (event,originalEvent,type,page) {
+                // 把当前点击的页码赋值给currentPage, 调用ajax,渲染页面
+                vm.currPage = page;
+                callback && callback()
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
