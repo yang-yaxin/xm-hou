@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-public class UserController {
+public class    UserController {
 
           @Resource
           private UserService userService;
