@@ -5,51 +5,6 @@
 <!-- namespace ：命名空间    配置当前mapper文件跟哪个dao接口对应-->
 <mapper namespace="com.jk.mapper.UserMapper">
 
-     <!--费用-->
-    <!-- 总条数 -->
-    <select id="findTotal" resultType="java.lang.Long">
-        select count(*) from feiyong x left join feiyongleixing y on x.type=y.tid
-left join t_person q on x.ren=q.sid
-        <where>
-            <if test="seo.price != null and seo.price != ''">
-                x.price like concat('%','${seo.price}','%')
-            </if>
-        </where>
-    </select>
-
-    <!-- 分页 -->
-    <select id="findPage" resultType="Fei">
-        <bind name="key_off" value="(currPage - 1)*pageSize"/>
-        select x.*,y.types china,q.sren green from feiyong x left join feiyongleixing y on x.type=y.tid
-        left join t_person q on x.ren=q.sid
-        <where>
-            <if test="seo.price != null and seo.price != ''">
-                x.price like concat('%','${seo.price}','%')
-            </if>
-        </where>
-        limit ${key_off},${pageSize}
-    </select>
-
-
-
-
-
-    <insert id="add" parameterType="Fei" >
-        insert into feiyong(type,price,ren,status) values(#{type},#{price},#{ren},#{status})
-     </insert>
-
-
-    <delete id="del">
-        delete from feiyong where id=#{id}
-    </delete>
-
-    <select id="huixian" parameterType="int" resultType="Fei">
-          select * from feiyong where id=#{id}
-    </select>
-
-    <update id="update">
-         update feiyong set type=#{type},price=#{price},ren=#{ren},status=#{status} where id = #{id}
-    </update>
 
     <select id="selectUserInfoByCode" parameterType="string" resultType="SysUser">
         select * from sys_user where usercode=#{userCode}
@@ -66,51 +21,6 @@ left join t_person q on x.ren=q.sid
         sp.parentid=#{pid} and
         sp.type='menu'
     </select>
-
-
-
-
-    <!--订餐-->
-    <!-- 总条数 -->
-    <select id="findTotalx" resultType="java.lang.Long">
-        select count(*) from Ordering x left join t_person q on x.ding=q.sid
-        left join Orderingx s on x.tao=s.rid
-        <where>
-            <if test="ordering.price != null and ordering.price != ''">
-                x.price like concat('%','${ordering.price}','%')
-            </if>
-        </where>
-    </select>
-
-    <!-- 分页 -->
-    <select id="findPagex" resultType="Ordering">
-        <bind name="key_off" value="(currPage - 1)*pageSize"/>
-        select x.*,q.sren yewu,s.rname yewu2 from Ordering x left join t_person q on x.ding=q.sid
-        left join Orderingx s on x.tao=s.rid
-        <where>
-            <if test="ordering.price != null and ordering.price != ''">
-                x.price like concat('%','${ordering.price}','%')
-            </if>
-        </where>
-        limit ${key_off},${pageSize}
-    </select>
-
-    <insert id="xin" parameterType="Ordering" >
-        insert into Ordering(ding,price,tao) values(#{ding},#{price},#{tao})
-    </insert>
-
-    <delete id="shan">
-          delete from Ordering where id=#{id}
-    </delete>
-
-    <select id="hui" parameterType="int" resultType="Ordering">
-          select * from Ordering where id=#{id}
-    </select>
-
-    <update id="up">
-         update Ordering set ding=#{ding},price=#{price},tao=#{tao} where id = #{id}
-    </update>
-
 
 
     <select id="selectPowerKeyList" resultType="string" parameterType="integer">

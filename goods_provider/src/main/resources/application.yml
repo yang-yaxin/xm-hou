@@ -1,0 +1,25 @@
+server:
+  port: 8986 #可以配置多个每个服务不同的端口号
+
+  #配置实例名称
+spring:
+  application:
+    name: goods-provider #配置多个实例名称，springCloud集群
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://DESKTOP-QLADQDP:3306/x?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2B8
+    username: root
+    password: 123
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8762/eureka #要和eureka注册服务的路径保持一致
+
+mybatis:
+  mapper-locations: classpath*:mybatis/*Mapper.xml
+  type-aliases-package: com.jk.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+

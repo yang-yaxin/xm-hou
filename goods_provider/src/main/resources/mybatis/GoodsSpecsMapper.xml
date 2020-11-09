@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jk.dao.GoodsSpecsMapper" >
+  <resultMap id="BaseResultMap" type="com.jk.entity.GoodsSpecs" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="goodspu_id" property="goodspuId" jdbcType="INTEGER" />
+    <result column="product_specs" property="productSpecs" jdbcType="VARCHAR" />
+    <result column="stock" property="stock" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, goodspu_id, product_specs, stock, price, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from goods_specs
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from goods_specs
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jk.entity.GoodsSpecs" >
+    insert into goods_specs (id, goodspu_id, product_specs, 
+      stock, price, create_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{goodspuId,jdbcType=INTEGER}, #{productSpecs,jdbcType=VARCHAR}, 
+      #{stock,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{createTime,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jk.entity.GoodsSpecs" >
+    insert into goods_specs
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="goodspuId != null" >
+        goodspu_id,
+      </if>
+      <if test="productSpecs != null" >
+        product_specs,
+      </if>
+      <if test="stock != null" >
+        stock,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="goodspuId != null" >
+        #{goodspuId,jdbcType=INTEGER},
+      </if>
+      <if test="productSpecs != null" >
+        #{productSpecs,jdbcType=VARCHAR},
+      </if>
+      <if test="stock != null" >
+        #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jk.entity.GoodsSpecs" >
+    update goods_specs
+    <set >
+      <if test="goodspuId != null" >
+        goodspu_id = #{goodspuId,jdbcType=INTEGER},
+      </if>
+      <if test="productSpecs != null" >
+        product_specs = #{productSpecs,jdbcType=VARCHAR},
+      </if>
+      <if test="stock != null" >
+        stock = #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jk.entity.GoodsSpecs" >
+    update goods_specs
+    set goodspu_id = #{goodspuId,jdbcType=INTEGER},
+      product_specs = #{productSpecs,jdbcType=VARCHAR},
+      stock = #{stock,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL},
+      create_time = #{createTime,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

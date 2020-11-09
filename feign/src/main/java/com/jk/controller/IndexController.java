@@ -23,5 +23,8 @@ public class IndexController {
         return "main";
     }
 
-
+    @RequestMapping("categoryList")
+    public String categoryList(){
+        return "goods/categoryList";
+    }
 }

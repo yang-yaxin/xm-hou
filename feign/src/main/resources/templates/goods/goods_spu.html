@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>商品管理</title>
+    <meta name="keywords" content="keyword1,keyword2,keyword3"></meta>
+
+    <meta name="description" content="this is my page"></meta>
+
+    <meta name="content-type" content="text/html; charset=UTF-8"></meta>
+    <link rel="stylesheet" href="../js/bootstrap/css/bootstrap-table.min.css">
+    <link rel="stylesheet" href="../js/bootstrap/css/bootstrap.min.css">
+
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap/js/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap/js/bootstrap-table-zh-CN.min.js"></script>
+    <link rel="stylesheet" href="../js/uploadify/uploadify.css">
+    <script type="text/javascript" src="../js/uploadify/jquery.uploadify.min.js"></script>
+</head>
+<body>
+<div class="pull-left">
+    <div class="form-group form-inline">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" title="新建" data-toggle="modal" data-target="#editModal"><i
+                    class="fa fa-file-o"></i> 新建
+            </button>
+            <button type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button>
+            <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i
+                    class="fa fa-refresh"></i> 刷新
+            </button>
+        </div>
+    </div>
+</div>
+<div class="box-tools pull-right">
+    <div class="has-feedback">
+        名称：<input id="name">
+        <button class="btn btn-default" onclick="javascript:cha()">查询</button>
+
+    </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h3 id="myModalLabel">类型编辑</h3>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="ff">
+                    <input type="hidden" name="id" id="bid">
+                    <table class="table table-bordered table-striped" width="800px">
+                        <tr>
+                            <td>商品名称</td>
+                            <td><input class="form-control" placeholder="商品名称" name="title" id="title"></td>
+
+                        </tr>
+                        <tr>
+                            <td>商品类型</td>
+                            <td>
+                                <select class="selectpicker form-control" data-live-search="true" name="categoryId" id="addid" onchange="javascript:attribute(this.value)">
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>规格</td>
+                            <td>
+                                <!--<select class="selectpicker form-control" data-live-search="true" name="categoryId" id="key">
+                                </select>-->
+                                <span id="gg"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>副标题</td>
+                            <td><input class="form-control" placeholder="副标题" name="subtitle" id="subtitle"></td>
+
+                        </tr>
+
+                        <tr>
+                            <td>图片</td>
+                            <td>图片：<input type="file" name="images" /><br/>
+
+                                <input type="submit" value="上传" />
+                            </td>
+                        </tr>
+
+
+                        <!--<tr>
+                              <td>时间</td>
+                              <td><input  type="date" placeholder="时间" name="orderTime" id="memo">
+                              </td>
+                          </tr>-->
+                        <tr>
+                            <td>详情</td>
+                            <td><input class="form-control" placeholder="详情" name="detail" id="detail"></td>
+
+                        </tr>
+                        <tr>
+                            <td>价格</td>
+                            <td><input class="form-control" placeholder="价格" name="goodsSpecs.price" id="price"></td>
+
+                        </tr>
+                        <tr>
+                            <td>库存</td>
+                            <td><input class="form-control" placeholder="库存" name="goodsSpecs.stock" id="stock"></td>
+
+                        </tr>
+                        <tr>
+                            <td>销量</td>
+                            <td><input class="form-control" placeholder="销量" name="sale" id="sale"></td>
+
+                        </tr>
+
+                        <tr>
+                            <td>状态</td>
+                            <td>  <input type="radio" name="status" value="1" >显示
+                                <input type="radio" name="status" value="2" >不显示
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" onclick="javascript:add()">保存
+                </button>
+                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table" id="myTable"></table>
+</body>
+<script type="text/javascript">
+    $(function () {
+        initTable();
+        showSel();
+    })
+    function showSel(){
+        $.ajax({
+            "type" : 'get',
+            "url": "../goods/categoryList",
+            "dataType" : "json",
+            "success" : function(data) {
+
+                var opts = "";
+                for( var i = 0 ; i < data.length; i++ ){
+
+                    opts += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                }
+// 查询界面
+                $("#addid").append(opts);
+
+            }
+        });
+    }
+    function attribute(id){
+        alert(id);
+        $.ajax({
+            "type" : 'get',
+            "url": "../goods/attributeKey",
+            "data":{categoryId:id},
+            "dataType" : "json",
+            "success" : function(data) {
+
+                var opts = "";
+                var str="";
+                for( var i = 0 ; i < data.length; i++ ){
+                    opts+=data[i].attributeName+":<br/>";
+                    opts+='<select class="selectpicker form-control" data-live-search="true" name="goodsSpecs.productSpecs"  id="'+data[i].id+'">';
+
+
+                    attributeValue(data[i].id,data[i].attributeName);
+
+                   /* opts += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";*/
+
+                    opts+='</select>';
+
+                    function attributeValue(id,attributeName){
+
+                        $.ajax({
+                            "type" : 'get',
+                            "url": "../goods/attributeValue",
+                            "data":{keyId:id},
+                            "dataType" : "json",
+                            "success" : function(result) {
+                                alert(result);
+
+
+                                var attribute="";
+                                for( var a = 0 ; a < result.length; a++ ){
+
+                                    attribute += "<option value='"+attributeName+":"+result[a].attributeValue+"'>"+result[a].attributeValue+"</option>";
+                                }
+
+
+                            $("#"+id).append(attribute);
+                            }
+                        });
+                    }
+
+                }
+
+                $("#gg").html(opts);
+
+            }
+        });
+    }
+    function cha() {
+        $("#myTable").bootstrapTable("refresh", {
+            query: {
+                goodsName:$("#name").val(),
+            }
+        })
+    }
+
+    function initTable() {
+        $("#myTable").bootstrapTable({
+            url: "../goods/findGoods",
+            columns: [
+                {checkbox: true},
+                {field: 'id', title: '商品编号', align: 'center', width: 150},
+                {field: 'title', title: '商品名称', align: 'center', width: 150/*,formatter:function(value, rows, index) {
+                        var str="";
+                        str3=rows.goodsName;
+                        str1=rows.versionName;
+                        str2=rows.colorName;
+                        str+=str3+str2+str1;
+                        return str;
+                    }*/},
+                {field: 'subtitle', title: '副标题', align: 'center', width: 150},
+                {field: 'detail', title: '商品详情', align: 'center', width: 150},
+                {field: 'images', title: '浏览', align: 'center', width: 150,formatter:function(value, rows, index) {
+                        return "<img style='width:50px;height:50px' src='/upload/"+value+"'>";
+                    }},
+                {field: 'price', title: '商品价格', align: 'center', width: 150},
+                {field: 'stock', title: '商品库存', align: 'center', width: 150},
+                {field: 'sale', title: '商品销量', align: 'center', width: 150},
+                {field: 'category', title: '商品类型', align: 'center', width: 150},
+
+                {field: 'createTime', title: '添加日期', align: 'center', width: 150},
+                {field: 'updateTime', title: '修改日期', align: 'center', width: 150},
+                {field: 'status', title: '状态', align: 'center', width: 150,formatter:function(value, rows, index) {
+                        var str = "";
+                        if (value == 1) {
+                            str += "显示";
+                        }
+                        if (value == 2) {
+                            str += "不显示";
+                        }
+                        return str;
+                    }},
+                {field: 'tool', title: '操作', align: 'center', width: 150,
+                    formatter: function (value, rows, index) {
+                        var str = "";
+                        str += "<a href='javascript:deletePatientById(" + rows.id + ")'>删除&nbsp;&nbsp;</a><br>";
+                        str += "<button type='button' class='btn bg-olive btn-xs' data-toggle='modal' data-target='#editModal' onclick='javascript:xiugai(" + rows.id + ")'>修改</button>";
+                        return str;
+                    }
+                },
+            ],
+            pagination: true,
+            pageSize: 10,
+            pageList: [10, 20, 30],
+        });
+    }
+
+    function deletePatientById(id) {
+        $.ajax({
+            url: "/goods/deleteCategory",
+            data: {id: id},
+            type: "post",
+            success: function () {
+                $("#myTable").bootstrapTable("refresh");
+            }
+        })
+    }
+
+    function xiugai(id) {
+        $.ajax({
+            url: "/goods/findGoodsOne",
+            type: "post",
+            data: {id: id},
+            success: function (data) {
+                console.log(data)
+                $("#bid").val(data.id);
+                $("#title").val(data.title);
+                $("#addid").val(data.categoryId);
+                $("#subtitle").val(data.subtitle);
+                $("#detail").val(data.detail);
+                $("#price").val(data.price);
+                $("#stock").val(data.stock);
+                $("#sale").val(data.sale);
+
+                if(data.status == 1){
+                    $("input[type=radio][name='status'][value='1']").attr("checked",'checked');
+                } else if(data.status == 2){
+                    $("input[type=radio][name='status'][value='2']").attr("checked",'checked');
+                }
+
+            }
+
+        })
+    }
+
+    function add() {
+        $.ajax({
+            url: "/goods/saveGoods",
+            type: "post",
+            data: $("#ff").serialize(),
+            success: function () {
+                alert("成功")
+                $("#myTable").bootstrapTable("refresh");
+
+            }
+        })
+    }
+    $("#uploadImg").uploadify({
+        'swf': '../js/uploadify/uploadify.swf',
+        'uploader': '../goods/tu',
+        'queueID': 'fileQueue',
+        'fileObjName' : 'imgfile',
+        'buttonText': '上传头像',
+        'auto': true,
+        'multi': true,
+        'removeCompleted': true,
+        'fileExt': '*.jpg;*.gif;*.png',
+        'cancelImg': '../js/uploadify/uploadify-cancel.png',
+        'removeTimeout' : 1,
+        'uploadLimit':  -1,
+        'fileTypeExts': '*.jpg;*.png',
+        'onUploadSuccess':function(file,data,response){
+            var imgurl = "http://<%= request.getServerName()%>:<%=request.getServerPort()%>../upload/"+eval(data);
+            $("#add_img").attr("src",imgurl);
+            $('#hideImg').val(eval(data));
+        }
+    });
+</script>
+</html>

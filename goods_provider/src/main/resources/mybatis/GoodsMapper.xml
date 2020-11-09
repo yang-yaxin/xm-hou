@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jk.dao.GoodsMapper" >
+  <resultMap id="BaseResultMap" type="com.jk.entity.Goods" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="category_id" property="categoryId" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="subtitle" property="subtitle" jdbcType="VARCHAR" />
+    <result column="images" property="images" jdbcType="VARCHAR" />
+    <result column="detail" property="detail" jdbcType="VARCHAR" />
+    <result column="attribute_key" property="attributeKey" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="INTEGER" />
+    <result column="stock" property="stock" jdbcType="INTEGER" />
+    <result column="sale" property="sale" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+    <result column="update_time" property="updateTime" jdbcType="DATE" />
+    <result column="label" property="label" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, category_id, title, subtitle, images, detail, attribute_key, price, stock, sale, 
+    status, create_time, update_time, label
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from goods_spu
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from goods_spu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jk.entity.Goods" >
+    insert into goods_spu (id, category_id, title, 
+      subtitle, images, detail, 
+      attribute_key, price, stock, 
+      sale, status, create_time, 
+      update_time, label)
+    values (#{id,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{subtitle,jdbcType=VARCHAR}, #{images,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, 
+      #{attributeKey,jdbcType=INTEGER}, #{price,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}, 
+      #{sale,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=DATE}, 
+      #{updateTime,jdbcType=DATE}, #{label,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jk.entity.Goods" >
+    insert into goods_spu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="categoryId != null" >
+        category_id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="subtitle != null" >
+        subtitle,
+      </if>
+      <if test="images != null" >
+        images,
+      </if>
+      <if test="detail != null" >
+        detail,
+      </if>
+      <if test="attributeKey != null" >
+        attribute_key,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="stock != null" >
+        stock,
+      </if>
+      <if test="sale != null" >
+        sale,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="label != null" >
+        label,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="subtitle != null" >
+        #{subtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="images != null" >
+        #{images,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null" >
+        #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="attributeKey != null" >
+        #{attributeKey,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="stock != null" >
+        #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="sale != null" >
+        #{sale,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="label != null" >
+        #{label,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jk.entity.Goods" >
+    update goods_spu
+    <set >
+      <if test="categoryId != null" >
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="subtitle != null" >
+        subtitle = #{subtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="images != null" >
+        images = #{images,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null" >
+        detail = #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="attributeKey != null" >
+        attribute_key = #{attributeKey,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="stock != null" >
+        stock = #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="sale != null" >
+        sale = #{sale,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="label != null" >
+        label = #{label,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jk.entity.Goods" >
+    update goods_spu
+    set category_id = #{categoryId,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      subtitle = #{subtitle,jdbcType=VARCHAR},
+      images = #{images,jdbcType=VARCHAR},
+      detail = #{detail,jdbcType=VARCHAR},
+      attribute_key = #{attributeKey,jdbcType=INTEGER},
+      price = #{price,jdbcType=INTEGER},
+      stock = #{stock,jdbcType=INTEGER},
+      sale = #{sale,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=DATE},
+      update_time = #{updateTime,jdbcType=DATE},
+      label = #{label,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="findGoods" resultType="Goods">
+   select s.*,name as category from goods_spu s left join goods_category c on s.category_id=c.id
+  </select>
+  <select id="attributeKey" resultType="AttributeKey">
+
+    select * from attribute_key where category_id=#{categoryId}
+  </select>
+  <select id="attributeValue" resultType="AttributeValue">
+    select * from attribute_value where key_id=#{keyId}
+  </select>
+  <insert id="addGoods" parameterType="Goods" useGeneratedKeys="true" keyProperty="goodsSpecs.goodspuId">
+    insert into goods_spu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="categoryId != null" >
+        category_id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="subtitle != null" >
+        subtitle,
+      </if>
+      <if test="images != null" >
+        images,
+      </if>
+      <if test="detail != null" >
+        detail,
+      </if>
+      <if test="attributeKey != null" >
+        attribute_key,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="stock != null" >
+        stock,
+      </if>
+      <if test="sale != null" >
+        sale,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="label != null" >
+        label,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="subtitle != null" >
+        #{subtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="images != null" >
+        #{images,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null" >
+        #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="attributeKey != null" >
+        #{attributeKey,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="stock != null" >
+        #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="sale != null" >
+        #{sale,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="label != null" >
+        #{label,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+<insert id="addGoodsSpecs" parameterType="GoodsSpecs">
+  insert into goods_specs
+  <trim prefix="(" suffix=")" suffixOverrides="," >
+    <if test="id != null" >
+      id,
+    </if>
+    <if test="goodspuId != null" >
+      goodspu_id,
+    </if>
+    <if test="productSpecs != null" >
+      product_specs,
+    </if>
+    <if test="stock != null" >
+      stock,
+    </if>
+    <if test="price != null" >
+      price,
+    </if>
+    <if test="createTime != null" >
+      create_time,
+    </if>
+  </trim>
+  <trim prefix="values (" suffix=")" suffixOverrides="," >
+    <if test="id != null" >
+      #{id,jdbcType=INTEGER},
+    </if>
+    <if test="goodspuId != null" >
+      #{goodspuId,jdbcType=INTEGER},
+    </if>
+    <if test="productSpecs != null" >
+      #{productSpecs,jdbcType=VARCHAR},
+    </if>
+    <if test="stock != null" >
+      #{stock},
+    </if>
+    <if test="price != null" >
+      #{price},
+    </if>
+    <if test="createTime != null" >
+      #{createTime,jdbcType=DATE},
+    </if>
+  </trim>
+
+</insert>
+  <select id="findGoodsOne" resultType="Goods">
+    select * from goods_spu where id=#{id}
+  </select>
+  <!--<update id="saveGoodsSpecs">
+    update goods_specs
+    <set >
+      <if test="goodspuId != null" >
+        goodspu_id = #{goodspuId},
+      </if>
+      <if test="productSpecs != null" >
+        product_specs = #{productSpecs},
+      </if>
+      <if test="stock != null" >
+        stock = #{stock},
+      </if>
+      <if test="price != null" >
+        price = #{price},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime},
+      </if>
+    </set>
+    where goodspu_id = #{id}
+  </update>-->
+</mapper>
